@@ -22,7 +22,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.http.routers.traefik.entrypoints: websecure
-      traefik.http.routers.traefik.rule: Host(`{{ HOSTNAME }}.dovington.net`)
+      traefik.http.routers.traefik.rule: Host(`{{ HOSTNAME }}.{{ DOMAIN }}`)
       traefik.http.routers.traefik.tls.certresolver: cloudflare
       traefik.http.services.traefik.loadbalancer.server.port: "8080"
     ports:
