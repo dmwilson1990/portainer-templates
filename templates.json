@@ -1,0 +1,38 @@
+{
+  "version": "2",
+  "templates": [
+    {
+      "type": 3,
+      "title": "Traefik",
+      "description": "Traefik is an open-source Edge Router that makes publishing your services a fun and easy experience. It receives requests on behalf of your system and finds out which components are responsible for handling them.",
+      "platform": "linux",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Traefik.logo.png",
+      "repository": {
+        "url": "https://github.com/dmwilson1990/portainer-templates",
+        "stackfile": "stacks/traefik/traefik.yml"
+      },
+      "env": [
+        {
+          "name": "CLOUDFLARE_EMAIL",
+          "label": "CLOUDFLARE_EMAIL"
+        },
+        {
+          "name": "CLOUDFLARE_DNS_API_TOKEN",
+          "label": "CLOUDFLARE_DNS_API_TOKEN"
+        },
+        {
+          "name": "HOSTNAME",
+          "label": "HOSTNAME"
+        },
+        {
+          "name": "DOMAIN",
+          "label": "DOMAIN"
+        },
+        {
+          "name": "DNS",
+          "label": "DNS"
+        }                        
+      ]
+    }
+  ]
+}

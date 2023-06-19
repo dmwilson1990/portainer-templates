@@ -1,0 +1,48 @@
+version: "3"
+services:
+  traefik:
+    command:
+    - --api.insecure=true
+    - --providers.docker=true
+    - --providers.docker.exposedbydefault=false
+    - --entrypoints.web.address=:80
+    - --entrypoints.websecure.address=:443
+    - --certificatesresolvers.cloudflare.acme.dnschallenge=true
+    - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+    - --certificatesresolvers.cloudflare.acme.email={{ CLOUDFLARE_EMAIL }}
+    - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
+    container_name: traefik
+    dns:
+    - {{ DNS }}
+    environment:
+      CLOUDFLARE_DNS_API_TOKEN: {{ CLOUDFLARE_DNS_API_TOKEN }}
+      CLOUDFLARE_EMAIL: {{ CLOUDFLARE_EMAIL }}
+    hostname: {{ HOSTNAME }}
+    image: traefik:latest
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.traefik.entrypoints: websecure
+      traefik.http.routers.traefik.rule: Host(`{{ HOSTNAME }}.dovington.net`)
+      traefik.http.routers.traefik.tls.certresolver: cloudflare
+      traefik.http.services.traefik.loadbalancer.server.port: "8080"
+    ports:
+    - 443:443
+    - 80:80
+    - 8080
+    restart: unless-stopped
+    volumes:
+    - type: volume
+      source: traefik_letsencrypt
+      target: /letsencrypt
+    - type: bind
+      source: /var/run/docker.sock
+      target: /var/run/docker.sock
+      read_only: true
+networks:
+  proxy:
+    name: proxy
+    external: true
+volumes:
+  traefik_letsencrypt:
+    name: traefik_letsencrypt
+    external: false
